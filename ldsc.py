@@ -8,9 +8,14 @@ LDSC is a command line tool for estimating
     3. genetic covariance / correlation
 
 Timshel edits (2018/2019)
-    1. Will not compute the 'Annotation Correlation Matrix' to the log file. This can take a LONG time if you have many annotations. 
+    1. ldsc.py: Will not compute the 'Annotation Correlation Matrix' to the log file. This can take a LONG time if you have many annotations. 
     We also skip calculating the 'correlation matrix including all LD Scores and sample MAF' and condition number.
-    2. 
+    2. sumstats.py: modified cell_type_specific() to 
+        2a) write a ".cell_type_results.tmp.txt" file after each regression, so we don't loose all computations if ldsc fails during one of the regressions (or the server terminates during the regressions). This is especially important when running ldsc with many CTS annotations.
+        2b) display a better progress log of the regressions: "running regression no. <i> out of <N>".
+        2c) wrapped cts loop inside try/except.
+        2d) added sys.stdout.flush() to enable 'online monitoring' of jobs - even without running in unbuffered mode (python -u).
+
 
 '''
 from __future__ import division
