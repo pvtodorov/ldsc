@@ -7,6 +7,11 @@ LDSC is a command line tool for estimating
     2. heritability / partitioned heritability
     3. genetic covariance / correlation
 
+Timshel edits (2018/2019)
+    1. Will not compute the 'Annotation Correlation Matrix' to the log file. This can take a LONG time if you have many annotations. 
+    We also skip calculating the 'correlation matrix including all LD Scores and sample MAF' and condition number.
+    2. 
+
 '''
 from __future__ import division
 import ldscore.ldscore as ld
@@ -387,34 +392,38 @@ def ldscore(args, log):
     log.log( t.ix[1:,:] )
 
     np.seterr(divide='ignore', invalid='ignore')  # print NaN instead of weird errors
-    # print correlation matrix including all LD Scores and sample MAF
-    log.log('')
-    log.log('MAF/LD Score Correlation Matrix')
-    log.log( df.ix[:,4:].corr() )
 
-    # print condition number
-    if n_annot > 1: # condition number of a column vector w/ nonzero var is trivially one
-        log.log('\nLD Score Matrix Condition Number')
-        cond_num = np.linalg.cond(df.ix[:,5:])
-        log.log( reg.remove_brackets(str(np.matrix(cond_num))) )
-        if cond_num > 10000:
-            log.log('WARNING: ill-conditioned LD Score Matrix!')
+    ### ***PT OUTCOMMENTED START***
+    # # print correlation matrix including all LD Scores and sample MAF
+    # log.log('')
+    # log.log('MAF/LD Score Correlation Matrix')
+    # log.log( df.ix[:,4:].corr() )
 
-    # summarize annot matrix if there is one
-    if annot_matrix is not None:
-        # covariance matrix
-        x = pd.DataFrame(annot_matrix, columns=annot_colnames)
-        log.log('\nAnnotation Correlation Matrix')
-        log.log( x.corr() )
+    # # print condition number
+    # if n_annot > 1: # condition number of a column vector w/ nonzero var is trivially one
+    #     log.log('\nLD Score Matrix Condition Number')
+    #     cond_num = np.linalg.cond(df.ix[:,5:])
+    #     log.log( reg.remove_brackets(str(np.matrix(cond_num))) )
+    #     if cond_num > 10000:
+    #         log.log('WARNING: ill-conditioned LD Score Matrix!')
 
-        # column sums
-        log.log('\nAnnotation Matrix Column Sums')
-        log.log(_remove_dtype(x.sum(axis=0)))
+    ### PT NOTE: this takes a LONG time for many annotations
+    # # summarize annot matrix if there is one
+    # if annot_matrix is not None:
+    #     # covariance matrix
+    #     x = pd.DataFrame(annot_matrix, columns=annot_colnames)
+    #     log.log('\nAnnotation Correlation Matrix')
+    #     log.log( x.corr() ) # ----> this takes a looong time!
 
-        # row sums
-        log.log('\nSummary of Annotation Matrix Row Sums')
-        row_sums = x.sum(axis=1).describe()
-        log.log(_remove_dtype(row_sums))
+    #     # column sums
+    #     log.log('\nAnnotation Matrix Column Sums')
+    #     log.log(_remove_dtype(x.sum(axis=0)))
+
+    #     # row sums
+    #     log.log('\nSummary of Annotation Matrix Row Sums')
+    #     row_sums = x.sum(axis=1).describe()
+    #     log.log(_remove_dtype(row_sums))
+    ### ***PT OUTCOMMENTED END***
 
     np.seterr(divide='raise', invalid='raise')
 
