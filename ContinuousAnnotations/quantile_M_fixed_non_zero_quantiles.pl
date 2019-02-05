@@ -12,10 +12,22 @@ sub print_header
   print "|                  Compute sum of each annotation                  |\n";
   print "|              by quantile of continuous annotations               |\n";
   print "|                     sgazal\@hsph.harvard.edu                      |\n";
-  print "|                      last modified: 08/10/18                     |\n";
+  print "|                     PACAL TIMSHEL MODIFIED                       |\n";
+  print "|                      last modified: 02/05/19                     |\n";
   print "\@------------------------------------------------------------------@\n";
   print "\n";
 }
+
+
+### Timshel notes
+# - *GOTCHA*: the --frqfile-chr must have SNPs in the same order as your annot file!? (the $cpt indexes the line number of the SNPs)
+# - *GOTCHA* the 'unmodified' quantile_M.pl will not 'include' the last 3 or annotations if running with thin-annot [see e.g. "for ($i=0; $i<($#line-3) ; $i++)"]. 
+#   However, it might be able to run on both thin-annot and 'normal' annotation files without errors. (Or it might go out of bounds [see e.g. $line[$i+4]])
+# - --exclude0 only excludes SNPs with zeroes values for the annotation given by --annot-header. It does not exclude SNPs 
+# 	- if (!defined($exclude0) || $line[$j]!=0) {
+# 	- if (!defined($exclude0) || $annot_value_all[$cpt]!=0) {
+# - I don't think that parsing --exclude0 and --nb-quantile 5 will give the same results as running with --fixed-quantiles, because fewer SNPs are 'counted' in the --exclude0
+
 
 sub print_help
 {
