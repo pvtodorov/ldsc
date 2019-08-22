@@ -17,5 +17,7 @@ This repo is forked from [bulik/ldsc](https://github.com/bulik/ldsc) to better s
 **New scripts**
 
 1. `quantile_M_fixed_non_zero_quantiles.pl`: modified version of `quantile_M.pl` that support h2 calculations for fixed intervals.
-2. `mtag_munge.py` (mtag_munge_v181115.py): an improved version of `munge_sumstats.py` created by [mtag](https://github.com/omeed-maghzian/mtag) developers.
+2. `mtag_munge.py`: an improved version of `munge_sumstats.py` created by [mtag](https://github.com/omeed-maghzian/mtag) developers. We have made a few small convenient adjustments to `mtag_munge.py` (see git history) .
 
+**Environments**
+1. Added environment_munge.yml with `numpy` and `pandas` versions that works with `munge_sumstats.py` (and `mtag_munge.py`).
