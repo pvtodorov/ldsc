@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from __future__ import division
 from __future__ import absolute_import
-from ldsc_mod.ldscore import allele_info as allele_info
+# from ldsc_mod.ldscore import allele_info as allele_info # Timshel
+from lib_mtag_munge import allele_info as allele_info # Timshel
 import pandas as pd
 import numpy as np
 import os
@@ -14,6 +15,29 @@ from scipy.stats import chi2
 import logging
 import time
 np.seterr(invalid='ignore')
+
+###################################### Timshel info ######################################
+# Script copied from mtag: https://github.com/omeed-maghzian/mtag
+# Commit:  Nov 25, 2018 | https://github.com/omeed-maghzian/mtag/commit/284241a7421723666af7c64adc0a4b38b3e422cb
+
+### mtag_munge.py is an improved version of munge_sumstats.py
+# mtag_munge advantages over munge_sumstats:
+#  - extract effect sizes and the standard errors
+#  - extract MAF
+#  - extract SNP coordinates?
+#  - better SNP filtering?
+
+### Differences to 
+### --n-value instead of : 'Integer valued sample size to apply uniformly across SNPs
+
+# See here for documentation: https://github.com/omeed-maghzian/mtag/wiki/Tutorial-1:-The-Basics#sample-gwas-results-and-data-format
+
+
+### Timshel modifications to mtag_munge.py
+#   - --keep-maf, --keep-beta, --keep-se --> default True
+
+##########################################################################################
+
 
 try:
     x = pd.DataFrame({'A': [1, 2, 3]})
