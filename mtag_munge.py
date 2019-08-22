@@ -27,8 +27,8 @@ np.seterr(invalid='ignore')
 #  - extract SNP coordinates?
 #  - better SNP filtering?
 
-### Differences to 
-### --n-value instead of : 'Integer valued sample size to apply uniformly across SNPs
+### Differences to LDSC
+### --n-value instead of --N: 'Integer valued sample size to apply uniformly across SNPs
 
 # See here for documentation: https://github.com/omeed-maghzian/mtag/wiki/Tutorial-1:-The-Basics#sample-gwas-results-and-data-format
 
