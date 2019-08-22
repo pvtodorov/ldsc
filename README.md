@@ -10,7 +10,7 @@ This repo is forked from [bulik/ldsc](https://github.com/bulik/ldsc) to better s
 
 3. sumstats.py: modified cell_type_specific() function:
     - 'result caching': write a ".cell_type_results.tmp.txt" file after each regression, so we don't loose all computations if ldsc fails during one of the regressions (or the server terminates during the regressions). This is especially important to when running ldsc with many CTS annotations.
-    - display/log progress of the CTS regressions ("running regression no. <i> out of <N>")
+    - display/log progress of the CTS regressions ("running regression no. ...")
     - wrapped 'CTS mode loop' inside try/except for better monitoring of errors.
     - added sys.stdout.flush() to enable 'online monitoring' of jobs - even without running in unbuffered mode (python -u).
 
