@@ -16,6 +16,8 @@ import logging
 import time
 np.seterr(invalid='ignore')
 
+import pdb
+
 ###################################### Timshel info ######################################
 # Script copied from mtag: https://github.com/omeed-maghzian/mtag
 # Commit:  Nov 25, 2018 | https://github.com/omeed-maghzian/mtag/commit/284241a7421723666af7c64adc0a4b38b3e422cb
@@ -705,12 +707,14 @@ parser.add_argument('--keep-str-ambig', default=False, action='store_true',
 ## output files
 ofile = parser.add_argument_group(title="Output Options", description="Output directory and options.")
 ofile.add_argument('--out', default=None, type=str, help="Output filename prefix.")
-ofile.add_argument('--keep-maf', default=False, action='store_true',
+ofile.add_argument('--keep-maf', default=True, action='store_true', # Timshel
                     help='Keep the MAF column (if one exists).')
-ofile.add_argument('--keep-beta', default=False, action='store_true',
+ofile.add_argument('--keep-beta', default=True, action='store_true', # Timshel
                     help='Keep the BETA column (if one exists).')
-ofile.add_argument('--keep-se', default=False, action='store_true',
+ofile.add_argument('--keep-se', default=True, action='store_true', # Timshel
                     help='Keep the SE column (if one exists).')
+ofile.add_argument('--keep-pval', default=True, action='store_true', # Timshel new
+                    help='Keep the P column.')
 ofile.add_argument('--stdout-off', default=False, action='store_true',
                     help='Only prints to the log file (not to console).')
 
@@ -898,6 +902,7 @@ def munge_sumstats(args, write_out=True, new_log=True):
             M=old - new, N=new))
         # filtering on N cannot be done chunkwise
         dat = process_n(dat, args)
+        dat['PVAL'] = dat.P # Timshel. Copy column
         dat.P = p_to_z(dat.P, dat.N)
         dat.rename(columns={'P': 'Z'}, inplace=True)
         if not args.a1_inc:
@@ -921,6 +926,8 @@ def munge_sumstats(args, write_out=True, new_log=True):
             dat.rename(columns={'SIGNED_SUMSTAT':'BETA'}, inplace=True)
         if args.keep_se and 'SE' in dat.columns:
             print_colnames.append('SE')
+        if args.keep_pval:
+            print_colnames.append('PVAL')
         if write_out:
             out_fname = args.out + '.sumstats'
             dat=dat[dat.N.notnull()] # added
@@ -928,7 +935,7 @@ def munge_sumstats(args, write_out=True, new_log=True):
             logging.info(
             msg.format(M=len(dat), F=out_fname + '.gz', N=dat.N.notnull().sum()))
             dat.to_csv(out_fname, sep="\t", index=False,
-                       columns=print_colnames, float_format='%.10f')
+                       columns=print_colnames) # float_format='%.10f'
             
             os.system('gzip -f {F}'.format(F=out_fname))
         logging.info('Dropping snps with null values')
