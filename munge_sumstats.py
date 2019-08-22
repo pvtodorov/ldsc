@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# OBS: LDSC requires Python version 2.7. Python 3 is not supported
+# See https://github.com/bulik/ldsc/blob/master/environment.yml
+
+
 from __future__ import division
 import pandas as pd
 import numpy as np
@@ -13,6 +18,8 @@ from ldscore import sumstats
 from ldsc import MASTHEAD, Logger, sec_to_str
 import time
 np.seterr(invalid='ignore')
+
+
 
 try:
     x = pd.DataFrame({'A': [1, 2, 3]})
